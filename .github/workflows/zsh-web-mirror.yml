@@ -1,0 +1,36 @@
+name: "SSH Mirror"
+
+on:
+  push:
+  delete:
+  create:
+  schedule:
+    - cron: "0 12 * * *"
+  workflow_dispatch:
+    inputs:
+      dry-run:
+        description: "Manually dispatch dry-run: [true/false]"
+        required: true
+        default: "false"
+
+concurrency:
+  group: ssh-mirror-${{ github.ref }}
+
+jobs:
+  ssh-mirror:
+    runs-on: ubuntu-latest
+    environment: ssh-mirror
+    steps:
+      - uses: z-shell/.github/actions/mirror@main
+        env:
+          # SSH private key with access to both repositories (required).
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          # Known hosts as used in the 'known_hosts' file (optional).
+          SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
+        with:
+          # SSH URL of the source repository (required).
+          source: "ssh://sallsource@git.code.sf.net/p/zsh/web"
+          # SSH URL of the target repository (required).
+          target: "ssh://git@github.com/z-shell/web"
+          # Do not apply any changes (optional).
+          dry-run: false
