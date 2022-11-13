@@ -1,9 +1,7 @@
-name: "SSH Mirror"
+---
+name: "🔄 SSH Mirror"
 
 on:
-  push:
-  delete:
-  create:
   schedule:
     - cron: "0 12 * * *"
   workflow_dispatch:
@@ -32,5 +30,5 @@ jobs:
           source: "ssh://sallsource@git.code.sf.net/p/zsh/web"
           # SSH URL of the target repository (required).
           target: "ssh://git@github.com/z-shell/web"
-          # Do not apply any changes (optional).
+          # Manually dispatch workflow and set dry-run: [true/false] (optional).
           dry-run: ${{ inputs.dry-run }}
