@@ -33,4 +33,4 @@ jobs:
           # SSH URL of the target repository (required).
           target: "ssh://git@github.com/z-shell/web"
           # Do not apply any changes (optional).
-          dry-run: false
+          dry-run: ${{ inputs.dry-run }}
